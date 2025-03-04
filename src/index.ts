@@ -1,0 +1,1 @@
+export { SyncPay } from "./syncPay";
