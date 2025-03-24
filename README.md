@@ -31,6 +31,30 @@ syncpay.pix.cashIn({
 })
 ```
 
+## Criar Pagamento PIX com Split
+
+```typescript
+syncpay.pix.cashIn({
+    amount: 10,
+	customer: {
+		name: "Paulo Queiroz",
+		email: "cliente@email.com",
+		cpf: "02965847521",
+	},
+    split: [
+          {
+            user_id: "leandroLima",
+            percentage: 50
+          },
+          {
+            user_id: "FelipeSilva",
+            percentage: 25
+          }
+    ],
+	postbackUrl: "https://exemple/webhook/"
+})
+```
+
 ## Realizar Transferência PIX
 
 ```typescript

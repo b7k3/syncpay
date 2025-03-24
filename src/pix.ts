@@ -8,6 +8,10 @@ interface PixCreateParams {
     email: string,
     cpf: string,
   },
+  split?: Array<{
+    user_id: string,
+    percentage: number
+  }>,
   postbackUrl: string,
 }
 
@@ -63,7 +67,7 @@ export class Pix {
 
     try {
       const response = await axios.post(`${this.config.apiBase}/v1/gateway/api/refund/`, {
-        id, 
+        id,
         external_reference
       },
         {
@@ -84,9 +88,25 @@ export class Pix {
   }
 
   public async cashIn(params: PixCreateParams): Promise<PixCreateResponse> {
-    const { amount, customer, postbackUrl } = params;
+    const { amount, customer, postbackUrl, split } = params;
 
     try {
+      if (split) {
+        const response = await axios.post(`${this.config.apiBase}/v1/gateway/api/split/`, {
+          amount,
+          customer,
+          postbackUrl,
+          split
+        },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Basic ${this.config.apiKey}`,
+            }
+          }
+        );
+        return response.data;
+      }
       const response = await axios.post(`${this.config.apiBase}/v1/gateway/api/`, {
         amount,
         customer,
